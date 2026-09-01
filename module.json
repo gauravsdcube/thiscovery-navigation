@@ -1,0 +1,21 @@
+{
+  "id": "thiscovery-navigation",
+  "name": "Thiscovery Navigation",
+  "description": "Manage the site top bar as a three-level menu tree: core links, pages, forms, maps, and custom URLs.",
+  "keywords": ["navigation", "menu", "thiscovery", "topbar"],
+  "version": "1.0.0",
+  "humhub": {
+    "minVersion": "1.18"
+  },
+  "authors": [
+    {
+      "name": "D Cube Consulting",
+      "email": "info@dcubeconsulting.co.uk",
+      "homepage": "https://dcubeconsulting.co.uk",
+      "role": "Copyright holder / Developer"
+    }
+  ],
+  "homepage": "https://github.com/gauravsdcube/thiscovery-navigation",
+  "license": "AGPL-3.0-or-later",
+  "copyright": "Copyright (c) 2026 D Cube Consulting. All rights reserved."
+}
