@@ -349,6 +349,7 @@ humhub.module('thiscoveryNavigation', function (module, require, $) {
             $form.find('[name=id]').val(node.id || '');
             $form.find('[name=label]').val(node.label || '');
             $form.find('[name=icon]').val(node.icon || '');
+            $form.find('[name=show_icon]').prop('checked', node.show_icon !== false);
             $form.find('[name=url]').val(node.url || '');
             $form.find('[name=visibility]').val(node.visibility || 'all');
             $form.find('[name=mobile_placement]').val(node.mobile_placement || 'hamburger');
@@ -398,6 +399,7 @@ humhub.module('thiscoveryNavigation', function (module, require, $) {
                 id: $form.find('[name=id]').val(),
                 label: $form.find('[name=label]').val(),
                 icon: $form.find('[name=icon]').val(),
+                show_icon: $form.find('[name=show_icon]').is(':checked') ? 1 : 0,
                 url: $form.find('[name=url]').val(),
                 visibility: $form.find('[name=visibility]').val(),
                 mobile_placement: $form.find('[name=mobile_placement]').val(),

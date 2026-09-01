@@ -22,6 +22,7 @@ use Yii;
  * @property string|null $source_key
  * @property string $label
  * @property string|null $icon
+ * @property int $show_icon
  * @property string|null $url
  * @property string $visibility
  * @property string $mobile_placement
@@ -60,7 +61,7 @@ class NavItem extends ActiveRecord
         return [
             [['type', 'label'], 'required'],
             [['space_id', 'parent_id', 'sort_order', 'depth', 'created_by', 'updated_by'], 'integer'],
-            [['new_window', 'enabled'], 'boolean'],
+            [['new_window', 'enabled', 'show_icon'], 'boolean'],
             [['scope'], 'string', 'max' => 16],
             [['type', 'visibility', 'mobile_placement'], 'string', 'max' => 16],
             [['source_key', 'icon'], 'string', 'max' => 64],
@@ -91,6 +92,9 @@ class NavItem extends ActiveRecord
         }
         if ($this->mobile_placement === '' || $this->mobile_placement === null) {
             $this->mobile_placement = self::PLACE_HAMBURGER;
+        }
+        if ($this->show_icon === null || $this->show_icon === '') {
+            $this->show_icon = 1;
         }
         if ($this->parent_id) {
             $this->mobile_placement = self::PLACE_HAMBURGER;
@@ -169,13 +173,23 @@ class NavItem extends ActiveRecord
         return (string)($catalog['label'] ?? Yii::t('ThiscoveryNavigationModule.base', 'Untitled'));
     }
 
-    public function displayIcon(): string
+    public function showsIcon(): bool
+    {
+        return (int)$this->show_icon !== 0;
+    }
+
+    public function iconName(): string
     {
         if (trim((string)$this->icon) !== '') {
             return (string)$this->icon;
         }
         $catalog = (new CatalogService())->byKey((string)$this->source_key);
         return (string)($catalog['icon'] ?? '');
+    }
+
+    public function displayIcon(): string
+    {
+        return $this->showsIcon() ? $this->iconName() : '';
     }
 
     public function resolveUrl(): ?string

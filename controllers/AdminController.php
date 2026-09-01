@@ -97,6 +97,7 @@ class AdminController extends Controller
         $item->label = trim((string)Yii::$app->request->post('label', ''))
             ?: Yii::t('ThiscoveryNavigationModule.base', $type === NavItem::TYPE_GROUP ? 'Menu group' : 'Link');
         $item->icon = trim((string)Yii::$app->request->post('icon', ''));
+        $item->show_icon = ((string)Yii::$app->request->post('show_icon', '1') === '1') ? 1 : 0;
         $item->url = $type === NavItem::TYPE_URL ? trim((string)Yii::$app->request->post('url', '')) : null;
         $item->visibility = (string)Yii::$app->request->post('visibility', NavItem::VIS_ALL);
         $item->mobile_placement = NavItem::PLACE_HAMBURGER;
@@ -127,6 +128,7 @@ class AdminController extends Controller
         $item->source_key = $key;
         $item->label = $catalog['label'];
         $item->icon = $catalog['icon'];
+        $item->show_icon = 1;
         $item->visibility = NavItem::VIS_ALL;
         $item->mobile_placement = NavItem::PLACE_HAMBURGER;
         $item->enabled = 1;
@@ -142,6 +144,7 @@ class AdminController extends Controller
         $item = $this->findItem((int)Yii::$app->request->post('id'));
         $item->label = trim((string)Yii::$app->request->post('label', $item->label));
         $item->icon = trim((string)Yii::$app->request->post('icon', (string)$item->icon));
+        $item->show_icon = ((string)Yii::$app->request->post('show_icon', '1') === '1') ? 1 : 0;
         $item->visibility = (string)Yii::$app->request->post('visibility', $item->visibility);
         if (!$item->parent_id) {
             $placement = (string)Yii::$app->request->post('mobile_placement', $item->mobile_placement);
@@ -211,7 +214,8 @@ class AdminController extends Controller
             'type' => $item->type,
             'source_key' => (string)$item->source_key,
             'label' => $item->displayLabel(),
-            'icon' => $item->displayIcon(),
+            'icon' => $item->iconName(),
+            'show_icon' => $item->showsIcon(),
             'url' => (string)$item->url,
             'visibility' => $item->visibility,
             'mobile_placement' => $item->mobilePlacement(),

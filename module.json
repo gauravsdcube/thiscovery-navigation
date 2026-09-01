@@ -3,7 +3,7 @@
   "name": "Thiscovery Navigation",
   "description": "Manage the site top bar as a three-level menu tree: core links, pages, forms, maps, and custom URLs.",
   "keywords": ["navigation", "menu", "thiscovery", "topbar"],
-  "version": "1.0.0",
+  "version": "1.0.1",
   "humhub": {
     "minVersion": "1.18"
   },

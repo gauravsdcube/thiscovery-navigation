@@ -102,8 +102,15 @@ $mobileIntro = $themeStyle === 'floating-bar'
                             </div>
                             <div class="tn-field">
                                 <label class="tn-label"><?= Yii::t('ThiscoveryNavigationModule.base', 'Icon') ?></label>
-                                <?= $guide(Yii::t('ThiscoveryNavigationModule.base', 'Optional Font Awesome icon name, for example home or file-text-o. Leave empty to use the source default.')) ?>
+                                <?= $guide(Yii::t('ThiscoveryNavigationModule.base', 'Optional Font Awesome icon name, for example home or file-text-o. Leave empty to use the source default. Untick Show icon to hide it in the menu.')) ?>
                                 <input type="text" class="form-control" name="icon" maxlength="64" placeholder="home">
+                            </div>
+                            <div class="tn-check-setting">
+                                <label class="form-check-label">
+                                    <input type="checkbox" class="form-check-input" name="show_icon" value="1" checked>
+                                    <?= Yii::t('ThiscoveryNavigationModule.base', 'Show icon') ?>
+                                </label>
+                                <?= $guide(Yii::t('ThiscoveryNavigationModule.base', 'When off, the label is shown without an icon, even if an icon name is set or the source has a default.')) ?>
                             </div>
                             <div class="tn-field" data-tn-url-field>
                                 <label class="tn-label"><?= Yii::t('ThiscoveryNavigationModule.base', 'URL') ?></label>

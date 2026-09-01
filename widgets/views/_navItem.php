@@ -12,23 +12,6 @@ $children = $item['children'] ?? [];
 $hasChildren = $children !== [];
 $url = $item['url'] ?: '#';
 $opensModal = !empty($item['modal_url']);
-// A page/link with children is a dropdown. Keep the original URL as the first item.
-if ($hasChildren && $url !== '#' && ($item['type'] ?? '') !== 'group') {
-    array_unshift($children, [
-        'id' => ($item['id'] ?? 0) . '-self',
-        'menu_id' => (($item['menu_id'] ?? ('tn-' . ($item['id'] ?? 0))) . '-self'),
-        'type' => $item['type'] ?? 'url',
-        'label' => $item['label'],
-        'icon' => $item['icon'] ?? '',
-        'url' => $url,
-        'modal_url' => $item['modal_url'] ?? null,
-        'new_window' => !empty($item['new_window']),
-        'active' => !empty($item['active']),
-        'children' => [],
-    ]);
-    $url = '#';
-    $opensModal = false;
-}
 $isGroup = (($item['type'] ?? '') === 'group') || ($url === '#' && !$opensModal);
 $classes = ['nav-item', 'tn-item'];
 if ($level === 1) {
@@ -71,11 +54,13 @@ if ($isGroup) {
     $options['role'] = 'button';
 }
 $label = Html::encode($item['label']);
-$iconHtml = $item['icon'] !== '' ? Icon::get($item['icon']) . ' ' : '';
+$showIcon = !isset($item['show_icon']) || !empty($item['show_icon']);
+$iconHtml = ($showIcon && ($item['icon'] ?? '') !== '') ? Icon::get($item['icon']) . ' ' : '';
 $caret = $hasChildren ? '<span class="tn-caret" aria-hidden="true"></span>' : '';
+$inner = '<span class="tn-link-text">' . $iconHtml . '<span class="tn-label">' . $label . '</span></span>' . $caret;
 ?>
 <li class="<?= Html::encode(implode(' ', $classes)) ?>" data-menu-id="<?= Html::encode($menuId) ?>">
-    <?= Html::a($iconHtml . '<span class="tn-label">' . $label . '</span>' . $caret, ($isGroup || $opensModal) ? '#' : $url, $options) ?>
+    <?= Html::a($inner, ($isGroup || $opensModal) ? '#' : $url, $options) ?>
     <?php if ($hasChildren): ?>
         <ul class="tn-submenu" id="<?= Html::encode($submenuId) ?>" role="list">
             <?php foreach ($children as $child): ?>
