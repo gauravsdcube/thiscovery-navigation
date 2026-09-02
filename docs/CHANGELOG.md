@@ -2,6 +2,11 @@
 
 All notable changes to this module are documented in this file.
 
+
+## 1.0.2 (September 2, 2026)
+
+- Enh: Soft-dep on thiscovery-translate so NavItem display labels resolve through the translation store when enabled
+
 ## 1.0.1 (September 1, 2026)
 
 - Enh: Per-item Show icon control so the top bar can use labels only

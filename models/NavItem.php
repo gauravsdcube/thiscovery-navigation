@@ -165,12 +165,33 @@ class NavItem extends ActiveRecord
 
     public function displayLabel(): string
     {
-        $label = trim((string)$this->label);
-        if ($label !== '') {
+        $custom = trim((string)$this->label);
+        if ($custom === '') {
+            $catalog = (new CatalogService())->byKey((string)$this->source_key);
+            return (string)($catalog['label'] ?? Yii::t('ThiscoveryNavigationModule.base', 'Untitled'));
+        }
+        // Admin-stored labels are English source text — translate at display time.
+        return self::maybeTranslateLabel($this->menuId(), $custom);
+    }
+
+    /**
+     * Soft-dep on thiscovery-translate for custom (non-empty) nav labels.
+     */
+    protected static function maybeTranslateLabel(string $menuKey, string $label): string
+    {
+        try {
+            $module = Yii::$app->getModule('thiscovery-translate');
+            if ($module === null || !method_exists($module, 'getIsEnabled') || !$module->getIsEnabled()) {
+                return $label;
+            }
+            $hook = \humhub\modules\thiscoveryTranslate\services\NavigationHook::class;
+            if (!class_exists($hook)) {
+                return $label;
+            }
+            return $hook::translateLabel($menuKey, $label);
+        } catch (\Throwable $e) {
             return $label;
         }
-        $catalog = (new CatalogService())->byKey((string)$this->source_key);
-        return (string)($catalog['label'] ?? Yii::t('ThiscoveryNavigationModule.base', 'Untitled'));
     }
 
     public function showsIcon(): bool
