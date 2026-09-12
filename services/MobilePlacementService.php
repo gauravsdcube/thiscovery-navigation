@@ -34,7 +34,7 @@ class MobilePlacementService
         $hamburgerSort = [];
         $floatingSort = [];
 
-        $schema = Yii::$app->db->schema->getTableSchema(NavItem::tableName(), true);
+        $schema = Yii::$app->db->schema->getTableSchema(NavItem::tableName());
         $hasPlacement = $schema && $schema->getColumn('mobile_placement') !== null;
 
         $style = 'hamburger';

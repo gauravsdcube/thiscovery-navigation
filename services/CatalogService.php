@@ -13,14 +13,20 @@ use yii\helpers\Url;
 
 class CatalogService
 {
+    /** @var array<int, array>|null */
+    private static ?array $allCache = null;
+
     /** @var array<string, array>|null */
-    private ?array $index = null;
+    private static ?array $indexCache = null;
 
     /**
      * @return array<int, array{key:string,type:string,label:string,icon:string,url:?string,sort:int}>
      */
     public function all(): array
     {
+        if (self::$allCache !== null) {
+            return self::$allCache;
+        }
         $items = array_merge(
             $this->coreModules(),
             $this->pages(),
@@ -29,6 +35,7 @@ class CatalogService
             $this->classified()
         );
         usort($items, static fn($a, $b) => ($a['sort'] <=> $b['sort']) ?: strcasecmp($a['label'], $b['label']));
+        self::$allCache = $items;
         return $items;
     }
 
@@ -37,13 +44,13 @@ class CatalogService
         if ($key === '') {
             return null;
         }
-        if ($this->index === null) {
-            $this->index = [];
+        if (self::$indexCache === null) {
+            self::$indexCache = [];
             foreach ($this->all() as $item) {
-                $this->index[$item['key']] = $item;
+                self::$indexCache[$item['key']] = $item;
             }
         }
-        return $this->index[$key] ?? null;
+        return self::$indexCache[$key] ?? null;
     }
 
     public function urlFor(NavItem $item): ?string
@@ -162,6 +169,7 @@ class CatalogService
                 'status' => $class::STATUS_PUBLISHED,
                 'is_template' => 0,
             ])
+            ->with(['content', 'parent'])
             ->all();
         foreach ($pages as $page) {
             if (method_exists($page, 'canAccessPublic') && !$page->canAccessPublic()) {
