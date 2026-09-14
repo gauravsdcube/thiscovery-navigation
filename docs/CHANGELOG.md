@@ -3,6 +3,10 @@
 All notable changes to this module are documented in this file.
 
 
+## 1.0.4 (September 14, 2026)
+
+- Enh: Collections and their child pages from Page Builder appear in the site tree automatically; live top-bar visibility still follows each page’s studio option
+
 ## 1.0.3 (September 12, 2026)
 
 - Fix: Rebuild the navigation catalog once per request instead of once per menu item (several-second page delay)

@@ -39,6 +39,12 @@ class CatalogService
         return $items;
     }
 
+    public static function flush(): void
+    {
+        self::$allCache = null;
+        self::$indexCache = null;
+    }
+
     public function byKey(string $key): ?array
     {
         if ($key === '') {

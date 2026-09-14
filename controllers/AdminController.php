@@ -50,6 +50,11 @@ class AdminController extends Controller
         );
         (new ImportService())->importIfEmpty();
         (new MobilePlacementService())->migrateFromThemeIfNeeded();
+        try {
+            (new \humhub\modules\thiscoveryNavigation\services\PageNavSyncService())->ensureAll();
+        } catch (\Throwable $e) {
+            Yii::warning('Page navigation ensure failed: ' . $e->getMessage(), 'thiscovery-navigation');
+        }
 
         $themeStyle = 'hamburger';
         $theme = Yii::$app->getModule('thiscovery-theme');
